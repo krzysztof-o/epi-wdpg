@@ -5,6 +5,7 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.MouseEvent;
+import flash.utils.Dictionary;
 import flash.utils.setTimeout;
 
 public class MemoryGame extends Sprite
@@ -16,6 +17,9 @@ public class MemoryGame extends Sprite
     private const ASSETS_CLASS:Class;
 
 
+    private var types:Dictionary = new Dictionary();
+
+
     [SWF(width=980, height=580, frameRate=30)]
     public function MemoryGame()
     {
@@ -25,10 +29,20 @@ public class MemoryGame extends Sprite
         const COLS:int = 4;
         const ROWS:int = 2;
         const PADDING:int = 5;
+        const TOTAL_CARD_TYPES:int = 4;
 
         //add background
         var background:Sprite = new BACKGROUND();
         addChild(background);
+
+        //rand card types
+        var randomTypes:Array = [];
+        for (var k:uint = 0; k < TOTAL_CARD_TYPES; k++)
+        {
+            randomTypes.push(k);
+            randomTypes.push(k);
+        }
+        randomTypes.sort(randomSort);
 
         //add cards
         for (var i:uint = 0; i < COLS; i++)
@@ -43,17 +57,22 @@ public class MemoryGame extends Sprite
 
                 card.gotoAndStop(1);
                 card.addEventListener(MouseEvent.CLICK, onCardClick);
+
+                types[card] = randomTypes[i + j * COLS];
             }
         }
+    }
+
+    private function randomSort(a:*, b:*):Number
+    {
+        return (Math.random() < 0.5) ? 1 : -1;
     }
 
     private function onCardClick(event:MouseEvent):void
     {
         var card:MovieClip = event.target as MovieClip;
 
-        //stop on random frame
-        var randomFrame:int = 1 + Math.round(Math.random() * card.totalFrames);
-        card.gotoAndStop(randomFrame);
+        card.gotoAndStop(types[card] + 2);
 
         setTimeout(flipCard, 1000, card);
     }
