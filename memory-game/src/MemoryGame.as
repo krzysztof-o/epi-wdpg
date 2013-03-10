@@ -1,5 +1,8 @@
 package
 {
+import com.greensock.TweenMax;
+import com.greensock.easing.Elastic;
+
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.display.StageAlign;
@@ -63,7 +66,12 @@ public class MemoryGame extends Sprite
                 card.gotoAndStop(1);
                 card.addEventListener(MouseEvent.CLICK, onCardClick);
 
-                types[card] = randomTypes[i + j * COLS];
+                var nr:int = i + j * COLS;
+                types[card] = randomTypes[nr];
+
+                card.scaleX = 0;
+                card.scaleY = 0;
+                TweenMax.to(card, 1.5, {scaleX: 1, scaleY: 1, delay: nr / 5, ease: Elastic.easeOut});
             }
         }
     }
