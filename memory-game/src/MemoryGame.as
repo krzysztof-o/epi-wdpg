@@ -18,6 +18,11 @@ public class MemoryGame extends Sprite
 
 
     private var types:Dictionary = new Dictionary();
+    private var lastCard:MovieClip;
+
+    private const FIRST_CARD:int = 1;
+    private const SECOND_CARD:int = 2;
+    private var phase:int = FIRST_CARD;
 
 
     [SWF(width=980, height=580, frameRate=30)]
@@ -74,12 +79,35 @@ public class MemoryGame extends Sprite
 
         card.gotoAndStop(types[card] + 2);
 
-        setTimeout(flipCard, 1000, card);
+        if(phase == SECOND_CARD)
+        {
+            setTimeout(flipCard, 1000, card, lastCard);
+        }
+
+        lastCard = card;
+
+        if(phase == FIRST_CARD)
+        {
+            phase = SECOND_CARD;
+        }
+        else
+        {
+            phase = FIRST_CARD;
+        }
     }
 
-    private function flipCard(card:MovieClip):void
+    private function flipCard(cardA:MovieClip, cardB:MovieClip):void
     {
-        card.gotoAndStop(1);
+        if(types[cardA] == types[cardB])
+        {
+            removeChild(cardA);
+            removeChild(cardB);
+        }
+        else
+        {
+            cardA.gotoAndStop(1);
+            cardB.gotoAndStop(1);
+        }
     }
 }
 }
