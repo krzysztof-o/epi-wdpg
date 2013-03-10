@@ -6,7 +6,8 @@ public class MemoryGame extends Sprite
 {
     public function MemoryGame()
     {
-        trace("Hello World!");
+        const COLS:int = 4;
+        const ROWS:int = 2;
     }
 }
 }
