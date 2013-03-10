@@ -1,5 +1,6 @@
 package
 {
+import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
@@ -21,9 +22,28 @@ public class MemoryGame extends Sprite
 
         const COLS:int = 4;
         const ROWS:int = 2;
+        const PADDING:int = 5;
 
+        //add background
         var background:Sprite = new BACKGROUND();
         addChild(background);
+
+        //add cards
+        for (var i:uint = 0; i < COLS; i++)
+        {
+            for (var j:uint = 0; j < ROWS; j++)
+            {
+                var card:MovieClip = new ASSETS_CLASS();
+                card.x = PADDING + i * (card.width + PADDING) + card.width / 2;
+                card.y = PADDING + j * (card.height + PADDING) + card.height / 2;
+
+                addChild(card);
+
+                //stop on random frame
+                var randomFrame:int = 1 + Math.round(Math.random() * card.totalFrames);
+                card.gotoAndStop(randomFrame);
+            }
+        }
     }
 }
 }
