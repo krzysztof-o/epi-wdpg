@@ -4,6 +4,8 @@ import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
+import flash.events.MouseEvent;
+import flash.utils.setTimeout;
 
 public class MemoryGame extends Sprite
 {
@@ -39,11 +41,26 @@ public class MemoryGame extends Sprite
 
                 addChild(card);
 
-                //stop on random frame
-                var randomFrame:int = 1 + Math.round(Math.random() * card.totalFrames);
-                card.gotoAndStop(randomFrame);
+                card.gotoAndStop(1);
+                card.addEventListener(MouseEvent.CLICK, onCardClick);
             }
         }
+    }
+
+    private function onCardClick(event:MouseEvent):void
+    {
+        var card:MovieClip = event.target as MovieClip;
+
+        //stop on random frame
+        var randomFrame:int = 1 + Math.round(Math.random() * card.totalFrames);
+        card.gotoAndStop(randomFrame);
+
+        setTimeout(flipCard, 1000, card);
+    }
+
+    private function flipCard(card:MovieClip):void
+    {
+        card.gotoAndStop(1);
     }
 }
 }
