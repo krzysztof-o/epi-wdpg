@@ -1,5 +1,6 @@
 package jetandgiant.object
 {
+import flash.display.Sprite;
 import flash.geom.Point;
 
 import jetandgiant.*;
@@ -23,10 +24,17 @@ public class Giant extends GameObject
 	private const BULLET_INTERVAL:Number = 400;
 	private var speed:Point = new Point();
 
+	public var collisionArea:Sprite;
+
 	public function Giant(game:Game)
 	{
 		super(game);
 		addChild(new SHIP());
+		collisionArea = new Sprite();
+		collisionArea.graphics.beginFill(0, 0);
+		collisionArea.graphics.drawRect(-width * 1/3, -height * 1/3, width * 2/3, height * 4/7);
+		collisionArea.graphics.endFill();
+		addChild(collisionArea);
 	}
 
 	override protected function onAddedToStage(event:Event):void

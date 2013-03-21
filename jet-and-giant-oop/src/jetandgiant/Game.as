@@ -15,9 +15,9 @@ public class Game extends Sprite
 	public var bullets:Vector.<Bullet> = new Vector.<Bullet>();
 	public var enemies:Vector.<Enemy> = new Vector.<Enemy>();
 	public var lives:Lives;
+	public var giant:Giant;
 
 	private var background:Background;
-	private var giant:Giant;
 
 	public function Game()
 	{
@@ -34,7 +34,7 @@ public class Game extends Sprite
 		giant = new Giant(this);
 		addChild(giant);
 
-		lives = new Lives();
+		lives = new Lives(this);
 		lives.x = stage.stageWidth - lives.width;
 		lives.y = 0;
 		addChild(lives);

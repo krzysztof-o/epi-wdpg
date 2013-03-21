@@ -54,6 +54,14 @@ public class Enemy extends GameObject
 			return;
 		}
 
+		if(game.giant.collisionArea.hitTestObject(this))
+		{
+			game.lives.minusLive();
+			var boom:Boom = new Boom(game, x, y);
+			game.addChild(boom);
+
+			remove();
+		}
 		move();
 	}
 
