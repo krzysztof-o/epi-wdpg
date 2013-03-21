@@ -3,6 +3,7 @@ package jetandgiant.object
 import flash.events.Event;
 
 import jetandgiant.*;
+import jetandgiant.object.enemy.Enemy;
 import jetandgiant.util.DisplayObjectUtil;
 
 public class Bullet extends GameObject
@@ -56,7 +57,7 @@ public class Bullet extends GameObject
 			if(hitTestObject(enemy))
 			{
 				remove();
-				enemy.remove();
+				enemy.hit();
 				var boom:Boom = new Boom(game, enemy.x, enemy.y);
 				game.addChild(boom);
 

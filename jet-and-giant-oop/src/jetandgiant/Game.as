@@ -5,6 +5,9 @@ import flash.events.Event;
 
 import jetandgiant.object.*;
 import jetandgiant.object.background.Background;
+import jetandgiant.object.enemy.Enemy;
+import jetandgiant.object.enemy.FastEnemy;
+import jetandgiant.object.enemy.SlowEnemy;
 import jetandgiant.ui.Lives;
 
 public class Game extends Sprite
@@ -54,9 +57,22 @@ public class Game extends Sprite
 
 		if(Math.random() < .025)
 		{
-			var newEnemy:Enemy = new Enemy(this);
-			addChild(newEnemy);
+			createEnemy();
 		}
+	}
+
+	private function createEnemy():void
+	{
+		var newEnemy:Enemy;
+		if (Math.random() < .5)
+		{
+			newEnemy = new FastEnemy(this);
+		}
+		else
+		{
+			newEnemy = new SlowEnemy(this);
+		}
+		addChild(newEnemy);
 	}
 }
 }

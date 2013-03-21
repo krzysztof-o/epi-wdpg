@@ -1,5 +1,8 @@
-package jetandgiant.object
+package jetandgiant.object.enemy
 {
+import jetandgiant.object.*;
+
+import flash.display.Sprite;
 import flash.events.Event;
 
 import jetandgiant.*;
@@ -7,15 +10,10 @@ import jetandgiant.util.DisplayObjectUtil;
 
 public class Enemy extends GameObject
 {
-	[Embed(source="/assets.swf", symbol="enemy1")]
-	private const ENEMY_1:Class;
-
-	private const SPEED:Number = 5 + Math.random() * 10;
-
-	public function Enemy(game:Game)
+	public function Enemy(game:Game, asset:Sprite)
 	{
 		super(game);
-		addChild(new ENEMY_1());
+		addChild(asset);
 	}
 
 	override protected function onAddedToStage(event:Event):void
@@ -43,6 +41,11 @@ public class Enemy extends GameObject
 		}
 	}
 
+	public function hit():void
+	{
+		remove();
+	}
+
 	override public function update():void
 	{
 		if(DisplayObjectUtil.isOffTheStage(stage, this))
@@ -51,7 +54,11 @@ public class Enemy extends GameObject
 			return;
 		}
 
-		x -= SPEED;
+		move();
+	}
+
+	protected function move():void
+	{
 	}
 
 }
