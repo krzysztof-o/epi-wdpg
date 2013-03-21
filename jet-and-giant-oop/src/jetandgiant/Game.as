@@ -5,6 +5,7 @@ import flash.events.Event;
 
 import jetandgiant.object.*;
 import jetandgiant.object.background.Background;
+import jetandgiant.object.bullet.Bullet;
 import jetandgiant.object.enemy.Enemy;
 import jetandgiant.object.enemy.FastEnemy;
 import jetandgiant.object.enemy.SlowEnemy;
@@ -55,7 +56,7 @@ public class Game extends Sprite
 			enemy.update();
 		}
 
-		if(Math.random() < .025)
+		if(Math.random() < .018)
 		{
 			createEnemy();
 		}

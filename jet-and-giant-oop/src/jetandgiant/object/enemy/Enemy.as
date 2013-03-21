@@ -1,15 +1,22 @@
 package jetandgiant.object.enemy
 {
+import flash.utils.getTimer;
+
 import jetandgiant.object.*;
 
 import flash.display.Sprite;
 import flash.events.Event;
 
 import jetandgiant.*;
+import jetandgiant.object.bullet.Bullet;
+import jetandgiant.object.bullet.EnemyBullet;
 import jetandgiant.util.DisplayObjectUtil;
 
 public class Enemy extends GameObject
 {
+	private var lastBulletTime:Number = 0;
+	private const BULLET_INTERVAL:Number = 1500;
+
 	public function Enemy(game:Game, asset:Sprite)
 	{
 		super(game);
@@ -63,11 +70,22 @@ public class Enemy extends GameObject
 			remove();
 		}
 		move();
+
+		if (isReadyForNextBullet())
+		{
+			lastBulletTime = getTimer();
+			var bullet:Bullet = new EnemyBullet(game, x, y);
+			game.addChild(bullet);
+		}
 	}
 
 	protected function move():void
 	{
 	}
 
+	private function isReadyForNextBullet():Boolean
+	{
+		return getTimer() > lastBulletTime + BULLET_INTERVAL && Math.random() < .025;
+	}
 }
 }

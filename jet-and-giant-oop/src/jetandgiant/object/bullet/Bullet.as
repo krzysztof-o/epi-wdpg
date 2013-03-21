@@ -1,26 +1,26 @@
-package jetandgiant.object
+package jetandgiant.object.bullet
 {
+import flash.display.Sprite;
+
+import jetandgiant.object.*;
+
 import flash.events.Event;
 
 import jetandgiant.*;
-import jetandgiant.object.enemy.Enemy;
 import jetandgiant.util.DisplayObjectUtil;
 
 public class Bullet extends GameObject
 {
-	[Embed(source="/assets.swf", symbol="bullet")]
-	private const BULLET:Class;
+	protected const SPEED:Number = 30;
 
-	private const SPEED:Number = 30;
-
-	public function Bullet(game:Game, x:Number, y:Number)
+	public function Bullet(game:Game, x:Number, y:Number, asset:Sprite)
 	{
 		super(game);
 
 		this.x = x;
 		this.y = y;
 
-		addChild(new BULLET());
+		addChild(asset);
 	}
 
 	override protected function onAddedToStage(event:Event):void
@@ -51,21 +51,19 @@ public class Bullet extends GameObject
 			return;
 		}
 
-		for(var i:uint = 0; i < game.enemies.length; i++)
-		{
-			var enemy:Enemy = game.enemies[i];
-			if(hitTestObject(enemy))
-			{
-				remove();
-				enemy.hit();
-				var boom:Boom = new Boom(game, enemy.x, enemy.y);
-				game.addChild(boom);
+		checkCollisions();
 
-				return;
-			}
-		}
+		move();
+	}
 
-		x += SPEED;
+	protected function checkCollisions():void
+	{
+
+	}
+
+	protected function move():void
+	{
+
 	}
 }
 }

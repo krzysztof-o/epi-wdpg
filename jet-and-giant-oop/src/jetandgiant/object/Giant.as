@@ -9,6 +9,9 @@ import flash.events.Event;
 import flash.ui.Keyboard;
 import flash.utils.getTimer;
 
+import jetandgiant.object.bullet.Bullet;
+import jetandgiant.object.bullet.GiantBullet;
+
 import jetandgiant.util.KeyboardUtil;
 import jetandgiant.util.MathUtil;
 
@@ -95,7 +98,7 @@ public class Giant extends GameObject
 	{
 		lastBulletTime = getTimer();
 
-		var bullet:Bullet = new Bullet(game, x + width / 2, y);
+		var bullet:Bullet = new GiantBullet(game, x + width / 2, y);
 		game.addChild(bullet);
 	}
 }
