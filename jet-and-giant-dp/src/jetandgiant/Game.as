@@ -25,6 +25,7 @@ public class Game extends Sprite
 	private function onAddedToStage(event:Event = null):void
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		gameModel.init();
 		gameModel.game = this;
 
 		var background:Background = new Background();

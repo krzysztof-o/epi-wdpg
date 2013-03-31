@@ -12,12 +12,9 @@ public class Bullet extends GameObject
 {
 	protected const SPEED:Number = 30;
 
-	public function Bullet(x:Number, y:Number, asset:Sprite)
+	public function Bullet(asset:Sprite)
 	{
 		super();
-
-		this.x = x;
-		this.y = y;
 
 		addChild(asset);
 	}

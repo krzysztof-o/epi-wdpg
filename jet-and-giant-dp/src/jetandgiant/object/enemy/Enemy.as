@@ -73,7 +73,10 @@ public class Enemy extends GameObject
 		if (isReadyForNextBullet())
 		{
 			lastBulletTime = getTimer();
-			var bullet:Bullet = new EnemyBullet(x, y);
+
+			var bullet:Bullet = gameModel.enemyBulletsPool.getObject();
+			bullet.x = x;
+			bullet.y = y;
 			gameModel.game.addChild(bullet);
 		}
 	}

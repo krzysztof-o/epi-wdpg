@@ -1,6 +1,7 @@
 package jetandgiant.object.bullet
 {
 import flash.display.Sprite;
+import flash.events.Event;
 
 import jetandgiant.object.Boom;
 import jetandgiant.object.enemy.Enemy;
@@ -10,10 +11,10 @@ public class GiantBullet extends Bullet
 	[Embed(source="/assets.swf", symbol="bullet")]
 	private const BULLET:Class;
 
-	public function GiantBullet(x:Number, y:Number)
+	public function GiantBullet()
 	{
 		var asset:Sprite = new BULLET();
-		super(x, y, asset);
+		super(asset);
 	}
 
 	override protected function move():void
@@ -36,6 +37,12 @@ public class GiantBullet extends Bullet
 				return;
 			}
 		}
+	}
+
+	override protected function onRemovedFromStage(event:Event):void
+	{
+		gameModel.giantBulletsPool.returnObject(this);
+		super.onRemovedFromStage(event);
 	}
 }
 }

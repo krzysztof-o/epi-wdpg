@@ -23,6 +23,7 @@ public class GameObject extends Sprite
 	protected function onRemovedFromStage(event:Event):void
 	{
 		removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
 	public function update():void

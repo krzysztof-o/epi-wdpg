@@ -96,7 +96,9 @@ public class Giant extends GameObject
 	{
 		lastBulletTime = getTimer();
 
-		var bullet:Bullet = new GiantBullet(x + width / 2, y);
+		var bullet:Bullet = gameModel.giantBulletsPool.getObject();
+		bullet.x = x + width / 2;
+		bullet.y = y;
 		gameModel.game.addChild(bullet);
 	}
 }
