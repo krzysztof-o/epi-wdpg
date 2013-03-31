@@ -4,6 +4,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 
 import jetandgiant.object.Boom;
+import jetandgiant.object.Giant;
 
 public class EnemyBullet extends Bullet
 {
@@ -27,10 +28,11 @@ public class EnemyBullet extends Bullet
 	{
 		if(gameModel.giant.collisionArea.hitTestObject(this))
 		{
-			remove();
-			gameModel.lives.minusLive();
+			dispatchEvent(new Event(Giant.GIANT_HIT, true));
 			var boom:Boom = new Boom(gameModel.giant.x, gameModel.giant.y);
 			gameModel.game.addChild(boom);
+
+			remove();
 		}
 	}
 

@@ -63,7 +63,7 @@ public class Enemy extends GameObject
 
 		if(gameModel.giant.collisionArea.hitTestObject(this))
 		{
-			gameModel.lives.minusLive();
+			dispatchEvent(new Event(Giant.GIANT_HIT, true));
 			var boom:Boom = new Boom(x, y);
 			gameModel.game.addChild(boom);
 

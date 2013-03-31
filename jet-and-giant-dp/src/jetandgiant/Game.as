@@ -3,6 +3,9 @@ package jetandgiant
 import flash.display.Sprite;
 import flash.events.Event;
 
+import jetandgiant.command.ICommand;
+import jetandgiant.command.GiantHitCommand;
+
 import jetandgiant.model.GameModel;
 
 import jetandgiant.object.*;
@@ -20,6 +23,13 @@ public class Game extends Sprite
 	public function Game()
 	{
 		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		addEventListener(Giant.GIANT_HIT, onGiantHit);
+	}
+
+	private function onGiantHit(event:Event):void
+	{
+		var giantHitCommand:ICommand = new GiantHitCommand();
+		giantHitCommand.execute();
 	}
 
 	private function onAddedToStage(event:Event = null):void

@@ -8,6 +8,7 @@ import jetandgiant.Game;
 
 public class Lives extends Sprite
 {
+
 	[Embed(source="/assets.swf", symbol="heart")]
 	private const HEART:Class;
 

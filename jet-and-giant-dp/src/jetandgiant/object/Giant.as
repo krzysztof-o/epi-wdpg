@@ -8,13 +8,14 @@ import flash.ui.Keyboard;
 import flash.utils.getTimer;
 
 import jetandgiant.object.bullet.Bullet;
-import jetandgiant.object.bullet.GiantBullet;
 
 import jetandgiant.util.KeyboardUtil;
 import jetandgiant.util.MathUtil;
 
 public class Giant extends GameObject
 {
+	public static const GIANT_HIT:String = "GIANT_HIT";
+
 	[Embed(source="/assets.swf", symbol="ship")]
 	private const SHIP:Class;
 
