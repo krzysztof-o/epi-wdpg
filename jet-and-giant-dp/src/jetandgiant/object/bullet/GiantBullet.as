@@ -2,7 +2,6 @@ package jetandgiant.object.bullet
 {
 import flash.display.Sprite;
 
-import jetandgiant.Game;
 import jetandgiant.object.Boom;
 import jetandgiant.object.enemy.Enemy;
 
@@ -11,10 +10,10 @@ public class GiantBullet extends Bullet
 	[Embed(source="/assets.swf", symbol="bullet")]
 	private const BULLET:Class;
 
-	public function GiantBullet(game:Game, x:Number, y:Number)
+	public function GiantBullet(x:Number, y:Number)
 	{
 		var asset:Sprite = new BULLET();
-		super(game, x, y, asset);
+		super(x, y, asset);
 	}
 
 	override protected function move():void
@@ -24,15 +23,15 @@ public class GiantBullet extends Bullet
 
 	override protected function checkCollisions():void
 	{
-		for(var i:uint = 0; i < game.enemies.length; i++)
+		for(var i:uint = 0; i < gameModel.enemies.length; i++)
 		{
-			var enemy:Enemy = game.enemies[i];
+			var enemy:Enemy = gameModel.enemies[i];
 			if(hitTestObject(enemy))
 			{
 				remove();
 				enemy.hit();
-				var boom:Boom = new Boom(game, enemy.x, enemy.y);
-				game.addChild(boom);
+				var boom:Boom = new Boom(enemy.x, enemy.y);
+				gameModel.game.addChild(boom);
 
 				return;
 			}

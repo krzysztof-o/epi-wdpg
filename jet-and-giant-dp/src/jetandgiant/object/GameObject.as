@@ -3,15 +3,14 @@ package jetandgiant.object
 import flash.display.Sprite;
 import flash.events.Event;
 
-import jetandgiant.Game;
+import jetandgiant.model.GameModel;
 
 public class GameObject extends Sprite
 {
-	protected var game:Game;
+	protected var gameModel:GameModel = GameModel.getInstance();
 
-	public function GameObject(game:Game)
+	public function GameObject()
 	{
-		this.game = game;
 		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
@@ -32,7 +31,7 @@ public class GameObject extends Sprite
 
 	public function remove():void
 	{
-		game.removeChild(this);
+		gameModel.game.removeChild(this);
 	}
 }
 }

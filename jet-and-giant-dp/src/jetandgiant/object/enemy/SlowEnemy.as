@@ -4,8 +4,6 @@ import com.greensock.TweenMax;
 
 import flash.display.Sprite;
 
-import jetandgiant.Game;
-
 public class SlowEnemy extends Enemy
 {
 	[Embed(source="/assets.swf", symbol="enemy2")]
@@ -15,10 +13,10 @@ public class SlowEnemy extends Enemy
 
 	private var hits:uint = 0;
 
-	public function SlowEnemy(game:Game)
+	public function SlowEnemy()
 	{
 		var asset:Sprite = new ASSET();
-		super(game, asset);
+		super(asset);
 	}
 
 	override protected function move():void

@@ -3,8 +3,6 @@ package jetandgiant.object
 import flash.display.Sprite;
 import flash.geom.Point;
 
-import jetandgiant.*;
-
 import flash.events.Event;
 import flash.ui.Keyboard;
 import flash.utils.getTimer;
@@ -29,9 +27,9 @@ public class Giant extends GameObject
 
 	public var collisionArea:Sprite;
 
-	public function Giant(game:Game)
+	public function Giant()
 	{
-		super(game);
+		super();
 		addChild(new SHIP());
 		collisionArea = new Sprite();
 		collisionArea.graphics.beginFill(0, 0);
@@ -98,8 +96,8 @@ public class Giant extends GameObject
 	{
 		lastBulletTime = getTimer();
 
-		var bullet:Bullet = new GiantBullet(game, x + width / 2, y);
-		game.addChild(bullet);
+		var bullet:Bullet = new GiantBullet(x + width / 2, y);
+		gameModel.game.addChild(bullet);
 	}
 }
 }

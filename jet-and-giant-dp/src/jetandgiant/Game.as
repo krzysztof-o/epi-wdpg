@@ -3,6 +3,8 @@ package jetandgiant
 import flash.display.Sprite;
 import flash.events.Event;
 
+import jetandgiant.model.GameModel;
+
 import jetandgiant.object.*;
 import jetandgiant.object.background.Background;
 import jetandgiant.object.bullet.Bullet;
@@ -13,12 +15,7 @@ import jetandgiant.ui.Lives;
 
 public class Game extends Sprite
 {
-	public var bullets:Vector.<Bullet> = new Vector.<Bullet>();
-	public var enemies:Vector.<Enemy> = new Vector.<Enemy>();
-	public var lives:Lives;
-	public var giant:Giant;
-
-	private var background:Background;
+	private var gameModel:GameModel = GameModel.getInstance();
 
 	public function Game()
 	{
@@ -28,30 +25,34 @@ public class Game extends Sprite
 	private function onAddedToStage(event:Event = null):void
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		gameModel.game = this;
 
-		background = new Background();
+		var background:Background = new Background();
 		addChild(background);
+		gameModel.background = background;
 
-		giant = new Giant(this);
+		var giant:Giant = new Giant();
 		addChild(giant);
+		gameModel.giant = giant;
 
-		lives = new Lives(this);
+		var lives:Lives = new Lives(this);
 		lives.x = stage.stageWidth - lives.width;
 		lives.y = 0;
 		addChild(lives);
+		gameModel.lives = lives;
 
 		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
 	private function onEnterFrame(event:Event):void
 	{
-		background.update();
-		giant.update();
-		for each(var bullet:Bullet in bullets)
+		gameModel.background.update();
+		gameModel.giant.update();
+		for each(var bullet:Bullet in gameModel.bullets)
 		{
 			bullet.update();
 		}
-		for each(var enemy:Enemy in enemies)
+		for each(var enemy:Enemy in gameModel.enemies)
 		{
 			enemy.update();
 		}
@@ -67,11 +68,11 @@ public class Game extends Sprite
 		var newEnemy:Enemy;
 		if (Math.random() < .5)
 		{
-			newEnemy = new FastEnemy(this);
+			newEnemy = new FastEnemy();
 		}
 		else
 		{
-			newEnemy = new SlowEnemy(this);
+			newEnemy = new SlowEnemy();
 		}
 		addChild(newEnemy);
 	}

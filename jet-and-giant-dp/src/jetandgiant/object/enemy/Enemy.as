@@ -7,7 +7,6 @@ import jetandgiant.object.*;
 import flash.display.Sprite;
 import flash.events.Event;
 
-import jetandgiant.*;
 import jetandgiant.object.bullet.Bullet;
 import jetandgiant.object.bullet.EnemyBullet;
 import jetandgiant.util.DisplayObjectUtil;
@@ -17,9 +16,9 @@ public class Enemy extends GameObject
 	private var lastBulletTime:Number = 0;
 	private const BULLET_INTERVAL:Number = 1500;
 
-	public function Enemy(game:Game, asset:Sprite)
+	public function Enemy(asset:Sprite)
 	{
-		super(game);
+		super();
 		addChild(asset);
 	}
 
@@ -27,7 +26,7 @@ public class Enemy extends GameObject
 	{
 		super.onAddedToStage(event);
 
-		game.enemies.push(this);
+		gameModel.enemies.push(this);
 
 		const MARGIN:Number = 100;
 		y = MARGIN + Math.random() * (stage.stageHeight - MARGIN * 2);
@@ -38,11 +37,11 @@ public class Enemy extends GameObject
 	{
 		super.onRemovedFromStage(event);
 
-		for(var i:uint = 0; i < game.enemies.length; i++)
+		for(var i:uint = 0; i < gameModel.enemies.length; i++)
 		{
-			if(game.enemies[i] == this)
+			if(gameModel.enemies[i] == this)
 			{
-				game.enemies.splice(i, 1);
+				gameModel.enemies.splice(i, 1);
 				break;
 			}
 		}
@@ -61,11 +60,11 @@ public class Enemy extends GameObject
 			return;
 		}
 
-		if(game.giant.collisionArea.hitTestObject(this))
+		if(gameModel.giant.collisionArea.hitTestObject(this))
 		{
-			game.lives.minusLive();
-			var boom:Boom = new Boom(game, x, y);
-			game.addChild(boom);
+			gameModel.lives.minusLive();
+			var boom:Boom = new Boom(x, y);
+			gameModel.game.addChild(boom);
 
 			remove();
 		}
@@ -74,8 +73,8 @@ public class Enemy extends GameObject
 		if (isReadyForNextBullet())
 		{
 			lastBulletTime = getTimer();
-			var bullet:Bullet = new EnemyBullet(game, x, y);
-			game.addChild(bullet);
+			var bullet:Bullet = new EnemyBullet(x, y);
+			gameModel.game.addChild(bullet);
 		}
 	}
 
