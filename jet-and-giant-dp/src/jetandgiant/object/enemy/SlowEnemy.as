@@ -4,12 +4,12 @@ import com.greensock.TweenMax;
 
 import flash.display.Sprite;
 
+import jetandgiant.object.enemy.strategy.SlowMoveStrategy;
+
 public class SlowEnemy extends Enemy
 {
 	[Embed(source="/assets.swf", symbol="enemy2")]
 	private const ASSET:Class;
-
-	private const SPEED:Number = 5;
 
 	private var hits:uint = 0;
 
@@ -17,12 +17,7 @@ public class SlowEnemy extends Enemy
 	{
 		var asset:Sprite = new ASSET();
 		super(asset);
-	}
-
-	override protected function move():void
-	{
-		x -= SPEED;
-		y += Math.sin(x / 50) * 5;
+		strategy = new SlowMoveStrategy();
 	}
 
 	override public function hit():void

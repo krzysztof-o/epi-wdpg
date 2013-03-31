@@ -8,13 +8,14 @@ import flash.display.Sprite;
 import flash.events.Event;
 
 import jetandgiant.object.bullet.Bullet;
-import jetandgiant.object.bullet.EnemyBullet;
+import jetandgiant.object.enemy.strategy.IMoveStrategy;
 import jetandgiant.util.DisplayObjectUtil;
 
 public class Enemy extends GameObject
 {
 	private var lastBulletTime:Number = 0;
 	private const BULLET_INTERVAL:Number = 1500;
+	protected var strategy:IMoveStrategy;
 
 	public function Enemy(asset:Sprite)
 	{
@@ -83,6 +84,7 @@ public class Enemy extends GameObject
 
 	protected function move():void
 	{
+		strategy.move(this);
 	}
 
 	private function isReadyForNextBullet():Boolean
