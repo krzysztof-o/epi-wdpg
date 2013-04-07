@@ -5,12 +5,14 @@ import com.as3nui.nativeExtensions.air.kinect.Kinect;
 import com.as3nui.nativeExtensions.air.kinect.KinectSettings;
 import com.as3nui.nativeExtensions.air.kinect.constants.CameraResolution;
 import com.as3nui.nativeExtensions.air.kinect.events.CameraImageEvent;
+import com.as3nui.nativeExtensions.air.kinect.events.DeviceEvent;
 
 import flash.display.Bitmap;
 
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
+import flash.events.Event;
 
 import jetandgiant.Game;
 import jetandgiant.model.GameModel;
@@ -30,7 +32,6 @@ public class JetAndGiantKinect extends Sprite
 		stage.stageHeight = 600;
 
 		initKinect();
-		initGame();
 		initCamera();
 	}
 
@@ -47,6 +48,7 @@ public class JetAndGiantKinect extends Sprite
 		var settings:KinectSettings = new KinectSettings();
 		settings.rgbEnabled = true;
 		settings.rgbResolution = CameraResolution.RESOLUTION_160_120;
+		kinect.addEventListener(DeviceEvent.STARTED, initGame);
 		kinect.start(settings);
 
 		gameModel.kinect = kinect;
@@ -57,7 +59,7 @@ public class JetAndGiantKinect extends Sprite
 		cameraBitmap.bitmapData = event.imageData;
 	}
 
-	private function initGame():void
+	private function initGame(event:Event = null):void
 	{
 		var game:Game = new Game();
 		addChild(game);
