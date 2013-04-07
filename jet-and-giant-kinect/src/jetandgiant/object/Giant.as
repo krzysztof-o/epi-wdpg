@@ -1,5 +1,9 @@
 package jetandgiant.object
 {
+import com.as3nui.nativeExtensions.air.kinect.data.SkeletonJoint;
+import com.as3nui.nativeExtensions.air.kinect.data.User;
+import com.as3nui.nativeExtensions.air.kinect.events.UserEvent;
+
 import flash.display.Sprite;
 import flash.geom.Point;
 
@@ -27,6 +31,7 @@ public class Giant extends GameObject
 	private var speed:Point = new Point();
 
 	public var collisionArea:Sprite;
+	private var user:User;
 
 	public function Giant()
 	{
@@ -47,39 +52,22 @@ public class Giant extends GameObject
 		y = stage.stageHeight / 2;
 
 		KeyboardUtil.init(stage);
+		gameModel.kinect.addEventListener(UserEvent.USERS_ADDED, onUserAdded);
+	}
+
+	private function onUserAdded(event:UserEvent):void
+	{
+		user = event.users[0];
 	}
 
 	override public function update():void
 	{
-		if(KeyboardUtil.isPressed(Keyboard.LEFT))
-		{
-			speed.x -= SPEED;
-		}
-		else if(KeyboardUtil.isPressed(Keyboard.RIGHT))
-		{
-			speed.x += SPEED;
-		}
+		if(!user) return;
 
-		if(KeyboardUtil.isPressed(Keyboard.UP))
-		{
-			speed.y -= SPEED;
-		}
-		else if(KeyboardUtil.isPressed(Keyboard.DOWN))
-		{
-			speed.y += SPEED;
-		}
+		var leftHandPosition:Point = user.getJointByName(SkeletonJoint.LEFT_HAND).position.depthRelative;
 
-		speed.x = MathUtil.clamp(speed.x, -MAX_SPEED, MAX_SPEED);
-		speed.y = MathUtil.clamp(speed.y, -MAX_SPEED, MAX_SPEED);
-
-		speed.x *= .9;
-		speed.y *= .9;
-
-		var dx:Number = x + speed.x;
-		var dy:Number = y + speed.y;
-
-		x = MathUtil.clamp(dx, width / 2, stage.stageWidth - width / 2);
-		y = MathUtil.clamp(dy, height / 2, stage.stageHeight - height / 2);
+		x = MathUtil.clamp(leftHandPosition.x * stage.stageWidth, 0, stage.stageWidth);
+		y = MathUtil.clamp(leftHandPosition.y * stage.stageHeight, 0, stage.stageHeight);
 
 
 		if(KeyboardUtil.isPressed(Keyboard.SPACE) && isReadyForNextBullet())

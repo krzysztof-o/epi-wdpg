@@ -47,6 +47,8 @@ public class JetAndGiantKinect extends Sprite
 		var kinect:Kinect = Kinect.getDevice();
 		var settings:KinectSettings = new KinectSettings();
 		settings.rgbEnabled = true;
+		settings.skeletonEnabled = true;
+		settings.skeletonSmoothing = 0.8;
 		settings.rgbResolution = CameraResolution.RESOLUTION_160_120;
 		kinect.addEventListener(DeviceEvent.STARTED, initGame);
 		kinect.start(settings);
