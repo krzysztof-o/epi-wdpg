@@ -8,7 +8,6 @@ import flash.display.Sprite;
 import flash.geom.Point;
 
 import flash.events.Event;
-import flash.ui.Keyboard;
 import flash.utils.getTimer;
 
 import jetandgiant.object.bullet.Bullet;
@@ -23,15 +22,11 @@ public class Giant extends GameObject
 	[Embed(source="/assets.swf", symbol="ship")]
 	private const SHIP:Class;
 
-	private const SPEED:Number = 5;
-	private const MAX_SPEED:Number = 17;
-
 	private var lastBulletTime:Number = 0;
-	private const BULLET_INTERVAL:Number = 400;
-	private var speed:Point = new Point();
 
 	public var collisionArea:Sprite;
 	private var user:User;
+	private var rightHandAboveHead:Boolean = false;
 
 	public function Giant()
 	{
@@ -69,16 +64,14 @@ public class Giant extends GameObject
 		x = MathUtil.clamp(leftHandPosition.x * stage.stageWidth, 0, stage.stageWidth);
 		y = MathUtil.clamp(leftHandPosition.y * stage.stageHeight, 0, stage.stageHeight);
 
+		var rightHandPosition:Point = user.getJointByName(SkeletonJoint.RIGHT_HAND).position.depthRelative;
+		var headPosition:Point = user.getJointByName(SkeletonJoint.HEAD).position.depthRelative;
 
-		if(KeyboardUtil.isPressed(Keyboard.SPACE) && isReadyForNextBullet())
+		if(!rightHandAboveHead && rightHandPosition.y < headPosition.y)
 		{
 			shoot();
 		}
-	}
-
-	private function isReadyForNextBullet():Boolean
-	{
-		return getTimer() > lastBulletTime + BULLET_INTERVAL;
+		rightHandAboveHead =  rightHandPosition.y < headPosition.y;
 	}
 
 	private function shoot():void
