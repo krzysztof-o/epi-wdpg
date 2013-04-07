@@ -62,7 +62,7 @@ public class JetAndGiantKinect extends Sprite
 	private function initGame(event:Event = null):void
 	{
 		var game:Game = new Game();
-		addChild(game);
+		addChildAt(game, 0);
 	}
 }
 }
