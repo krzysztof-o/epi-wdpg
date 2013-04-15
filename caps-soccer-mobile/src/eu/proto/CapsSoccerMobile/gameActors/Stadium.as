@@ -2,12 +2,14 @@ package eu.proto.CapsSoccerMobile.gameActors
 {
 	import eu.proto.CapsSoccerMobile.Game;
 	import eu.proto.CapsSoccerMobile.sceneBase.Scene;
-
-import flash.geom.Point;
-import flash.geom.Rectangle;
+    import flash.geom.Point;
+    import flash.geom.Rectangle;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.Texture;
+    import starling.events.Touch;
+    import starling.events.TouchEvent;
+    import starling.events.TouchPhase;
+    import starling.textures.Texture;
 	
 	/**
 	 * Class representing the game board, managing its display, physics, logic and touch interface
@@ -33,6 +35,7 @@ import flash.geom.Rectangle;
 			
 			var texture:Texture = Texture.fromTexture(Game.gameTexture, new Rectangle(0, 0, 2048, 1407));
 			background = new Image(texture);
+            background.addEventListener(TouchEvent.TOUCH, onTouch);
 			addChild(background);
 
             addCaps();
@@ -78,6 +81,54 @@ import flash.geom.Rectangle;
                     addChild(ballCap);
                     ballCap.x = position.x;
                     ballCap.y = position.y;
+            }
+        }
+
+        private function onTouch(e:TouchEvent):void
+        {
+            if (e.touches.length == 1)
+            {
+                var touch:Touch = e.getTouch(stage, TouchPhase.MOVED);
+                if (touch)
+                {
+                    var offset:Point = touch.getMovement(stage);
+                    Scene.displayOffset = Scene.displayOffset.add(offset);
+                }
+            }
+            else
+            {
+                var touches:Vector.<Touch> = e.getTouches(stage);
+                if(touches.length > 1)
+                {
+                    var touchA:Touch = touches[0];
+                    var touchB:Touch = touches[1];
+
+                    var currentPosA:Point  = touchA.getLocation(parent);
+                    var previousPosA:Point = touchA.getPreviousLocation(parent);
+                    var currentPosB:Point  = touchB.getLocation(parent);
+                    var previousPosB:Point = touchB.getPreviousLocation(parent);
+
+                    var currentVector:Point  = currentPosA.subtract(currentPosB);
+                    var previousVector:Point = previousPosA.subtract(previousPosB);
+
+                    // update pivot point based on previous center
+                    var previousLocalA:Point  = touchA.getPreviousLocation(this);
+                    var previousLocalB:Point  = touchB.getPreviousLocation(this);
+                    pivotX = (previousLocalA.x + previousLocalB.x) * 0.5;
+                    pivotY = (previousLocalA.y + previousLocalB.y) * 0.5;
+
+                    // update location based on the current center
+                    x = (currentPosA.x + currentPosB.x) * 0.5;
+                    y = (currentPosA.y + currentPosB.y) * 0.5;
+
+                    // scale
+                    var sizeDiff:Number = currentVector.length / previousVector.length;
+                    scaleX *= sizeDiff;
+                    scaleY *= sizeDiff;
+
+                    Scene.displayOffset = new Point(x,y);
+                    Scene.displayScale *= sizeDiff;
+                }
             }
         }
 		

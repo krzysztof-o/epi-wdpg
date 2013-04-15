@@ -15,6 +15,8 @@ package eu.proto.CapsSoccerMobile
 		private var starling:Starling;
 		public function CapsSoccerMobile():void
 		{
+            //uncomment following line before building for mobile
+            //Starling.multitouchEnabled = true;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
             stage.frameRate = 60;
@@ -24,10 +26,11 @@ package eu.proto.CapsSoccerMobile
 		
 		public function onResize(e:Event):void
 		{
-			removeEventListener(Event.RESIZE, onResize);	
-			
+			removeEventListener(Event.RESIZE, onResize);
+
 			starling = new Starling(Game, stage);			
-			starling.antiAliasing = 1;			
+			starling.antiAliasing = 1;
+            starling.simulateMultitouch = true;
 			starling.start();
 		}		
 	}	
