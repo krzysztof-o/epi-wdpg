@@ -1,6 +1,11 @@
 package eu.proto.CapsSoccerMobile.gameActors 
 {
+    import Box2D.Collision.Shapes.b2PolygonShape;
     import Box2D.Common.Math.b2Vec2;
+    import Box2D.Dynamics.b2Body;
+    import Box2D.Dynamics.b2BodyDef;
+    import Box2D.Dynamics.b2FixtureDef;
+
     import eu.proto.CapsSoccerMobile.Game;
 	import eu.proto.CapsSoccerMobile.sceneBase.Scene;
     import flash.geom.Point;
@@ -32,7 +37,8 @@ package eu.proto.CapsSoccerMobile.gameActors
 		override protected function onAdded(e:Event):void
 		{
 			super.onAdded(e);
-			center();
+            createField();
+            center();
 			
 			var texture:Texture = Texture.fromTexture(Game.gameTexture, new Rectangle(0, 0, 2048, 1407));
 			background = new Image(texture);
@@ -42,7 +48,8 @@ package eu.proto.CapsSoccerMobile.gameActors
             addCaps();
 		}
 
-        private function addCaps():void {
+        private function addCaps():void
+        {
             addCap(Cap.KIND_BALL);
 
             addCap(Cap.KIND_PL);
@@ -80,6 +87,57 @@ package eu.proto.CapsSoccerMobile.gameActors
                     addChild(ballCap);
                     ballCap.body.SetPosition(position);
             }
+        }
+
+        private function createField():void
+        {
+            //TOP_BOX
+            createBodyAndFixture(0, 0, 1024, 88);
+
+            //BOTTOM_BOX
+            createBodyAndFixture(0, 1231, 1024, 88);
+
+            //LEFT_TOP_BOX
+            createBodyAndFixture(0, 176, 88, 167);
+
+            //LEFT_BOTTOM_BOX
+            createBodyAndFixture(0, 898, 88, 167);
+
+            //RIGHT_TOP_BOX
+            createBodyAndFixture(1872, 176, 88, 167);
+
+            //RIGHT_BOTTOM_BOX
+            createBodyAndFixture(1872, 898, 88, 167);
+        }
+
+        private function createBodyAndFixture(x:Number, y:Number, width:Number, height:Number):void
+        {
+            var bodyDef:b2BodyDef;
+            var shape:b2PolygonShape;
+            var fixture:b2FixtureDef;
+
+            var friction:Number = 1;
+            var density:Number = 0;
+            var restitution:Number = 1;
+
+            bodyDef = new b2BodyDef();
+
+            fixture = new b2FixtureDef();
+
+            fixture.friction = friction;
+            fixture.density = density;
+            fixture.restitution = restitution;
+
+            shape = new b2PolygonShape();
+
+            shape.SetAsBox(width / Scene.worldScale, height / Scene.worldScale);
+
+            fixture.shape = shape;
+
+            bodyDef.position.Set((width + x) / Scene.worldScale, (height + y) / Scene.worldScale);
+
+            var body:b2Body = world.CreateBody(bodyDef);
+            body.CreateFixture(fixture);
         }
 
         private function onTouch(e:TouchEvent):void
