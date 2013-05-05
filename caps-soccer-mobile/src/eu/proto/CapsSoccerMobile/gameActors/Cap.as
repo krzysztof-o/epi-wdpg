@@ -1,6 +1,8 @@
 package eu.proto.CapsSoccerMobile.gameActors 
 {
-	import eu.proto.CapsSoccerMobile.Game;
+    import Box2D.Collision.Shapes.b2CircleShape;
+    import Box2D.Common.Math.b2Vec2;
+    import eu.proto.CapsSoccerMobile.Game;
 	import eu.proto.CapsSoccerMobile.sceneBase.BodySprite;
     import eu.proto.CapsSoccerMobile.sceneBase.Scene;
     import flash.geom.Point;
@@ -41,7 +43,13 @@ package eu.proto.CapsSoccerMobile.gameActors
 			_kind = kind;
             createImage();
             setupTouch();
+            setupShape();
 		}
+
+        private function setupShape():void
+        {
+            shape = new b2CircleShape(45 / Scene.worldScale);
+        }
 
         private function createImage():void
         {
@@ -120,7 +128,7 @@ package eu.proto.CapsSoccerMobile.gameActors
             {
                 case TouchPhase.BEGAN:
                     //apply the force at cap's center
-                    force_application_point = new Point(x, y);
+                    force_application_point = new Point(body.GetWorldCenter().x * Scene.worldScale, body.GetWorldCenter().y * Scene.worldScale);
                     parent.setChildIndex(this, parent.numChildren - 1);
                     break;
                 case TouchPhase.MOVED:
@@ -129,6 +137,10 @@ package eu.proto.CapsSoccerMobile.gameActors
                     break;
                 case TouchPhase.ENDED:
                     //shoot the cap!
+                    body.ApplyImpulse(
+                            new b2Vec2( -Math.min(force_vector.x/Scene.worldScale, 100),
+                                    -Math.min(force_vector.y/Scene.worldScale, 100)),
+                            new b2Vec2(force_application_point.x/Scene.worldScale, force_application_point.y/Scene.worldScale));
                 default:
                     //the cap is not being touched - zero the force and reset the gizmo
                     force_vector = new Point();

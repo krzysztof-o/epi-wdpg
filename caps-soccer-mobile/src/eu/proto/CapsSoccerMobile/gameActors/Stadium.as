@@ -1,6 +1,7 @@
 package eu.proto.CapsSoccerMobile.gameActors 
 {
-	import eu.proto.CapsSoccerMobile.Game;
+    import Box2D.Common.Math.b2Vec2;
+    import eu.proto.CapsSoccerMobile.Game;
 	import eu.proto.CapsSoccerMobile.sceneBase.Scene;
     import flash.geom.Point;
     import flash.geom.Rectangle;
@@ -55,32 +56,29 @@ package eu.proto.CapsSoccerMobile.gameActors
 
         public function addCap(kind:int):void
         {
-            var position:Point = new Point(1024, 703.5);
+            var position:b2Vec2 = new b2Vec2(1024 / worldScale, 703.5 / worldScale);
             var angle:Number;
-            var radius:Number = 260;
+            var radius:Number = 260 / worldScale;
             switch(kind)
             {
                 case Cap.KIND_PL:
                     angle = 2 * Math.PI / 3 + (Math.PI / 3) * plCaps.length;
-                    position = position.add(new Point(radius * Math.cos(angle), radius * Math.sin(angle)));
+                    position.Add(new b2Vec2(radius * Math.cos(angle), radius * Math.sin(angle)));
                     plCaps.push(new Cap(kind));
                     addChild(plCaps[plCaps.length - 1]);
-                    plCaps[plCaps.length - 1].x = position.x;
-                    plCaps[plCaps.length - 1].y = position.y;
+                    plCaps[plCaps.length - 1].body.SetPosition(position);
                     break;
                 case Cap.KIND_DE:
                     angle = Math.PI / 3 - (Math.PI / 3) * deCaps.length;
-                    position = position.add(new Point(radius * Math.cos(angle), radius * Math.sin(angle)));
+                    position.Add(new b2Vec2(radius * Math.cos(angle), radius * Math.sin(angle)));
                     deCaps.push(new Cap(kind));
                     addChild(deCaps[deCaps.length - 1]);
-                    deCaps[deCaps.length - 1].x = position.x;
-                    deCaps[deCaps.length - 1].y = position.y;
+                    deCaps[deCaps.length - 1].body.SetPosition(position);
                     break;
                 default:
                     ballCap = new Cap(kind);
                     addChild(ballCap);
-                    ballCap.x = position.x;
-                    ballCap.y = position.y;
+                    ballCap.body.SetPosition(position);
             }
         }
 
