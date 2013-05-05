@@ -11,7 +11,8 @@ package eu.proto.CapsSoccerMobile.gameActors
     import flash.geom.Point;
     import flash.geom.Rectangle;
 	import starling.display.Image;
-	import starling.events.Event;
+    import starling.events.EnterFrameEvent;
+    import starling.events.Event;
     import starling.events.Touch;
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
@@ -185,6 +186,77 @@ package eu.proto.CapsSoccerMobile.gameActors
                     Scene.displayOffset = new Point(x,y);
                     Scene.displayScale *= sizeDiff;
                 }
+            }
+        }
+
+        override protected function onFrame(e:EnterFrameEvent):void
+        {
+            super.onFrame(e);
+
+            checkForGoal();
+            checkIfTeamMembersNeedReset(plCaps);
+            checkIfTeamMembersNeedReset(deCaps);
+        }
+
+        private function checkIfTeamMembersNeedReset(team:Vector.<Cap>):void
+        {
+            for each(var cap:Cap in team)
+            {
+                if (cap && cap.body.GetPosition().x < 50 / worldScale || cap.body.GetPosition().x > 1998 / worldScale)
+                {
+                    resetCap(cap);
+                }
+            }
+        }
+
+        private function checkForGoal():void
+        {
+            if (ballCap && ballCap.body.GetPosition().x < 150 / worldScale || ballCap.body.GetPosition().x > 1898 / worldScale)
+            {
+                resetBoard();
+            }
+        }
+
+        public function resetBoard():void
+        {
+            center();
+            resetCap(ballCap);
+
+            for each(var cap:Cap in plCaps)
+            {
+                resetCap(cap);
+            }
+
+            for each(cap in deCaps)
+            {
+                resetCap(cap);
+            }
+        }
+
+        public function resetCap(cap:Cap):void
+        {
+            var kind:int = cap.kind;
+            var position:b2Vec2 = new b2Vec2(1024 / worldScale, 703.5 / worldScale);
+            var angle:Number;
+            var radius:Number = 260 / worldScale;
+
+            cap.body.SetLinearVelocity(new b2Vec2());
+            cap.body.SetAngularVelocity(0);
+
+            switch(kind)
+            {
+                case Cap.KIND_PL:
+                    angle = 2 * Math.PI / 3 + (Math.PI / 3) * plCaps.indexOf(cap);
+                    position.Add(new b2Vec2(radius * Math.cos(angle), radius * Math.sin(angle)));
+                    cap.body.SetPosition(position);
+                    break;
+                case Cap.KIND_DE:
+                    angle = Math.PI / 3 - (Math.PI / 3) * deCaps.indexOf(cap);
+                    position.Add(new b2Vec2(radius * Math.cos(angle), radius * Math.sin(angle)));
+                    cap.body.SetPosition(position);
+                    break;
+                default:
+                    cap.body.SetPosition(position);
             }
         }
 		
