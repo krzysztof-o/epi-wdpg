@@ -7,3 +7,4 @@
 5. Mobile + Starling ([code](../../tree/v5.1/caps-soccer-mobile))
 6. Mobile + Starling 2 ([code](../../tree/v5.4/caps-soccer-mobile))
 7. Box2D ([code](../../tree/v6.3/caps-soccer-mobile))
+8. AI - A* ([code](../../tree/master/room-navigation))
